@@ -3,9 +3,14 @@ import jwt from 'jsonwebtoken';
 import { connectToDatabase } from '@/lib/db';
 import Credential from '@/models/credential';
 
-export async function GET(request: NextRequest, context: { params: { id: string } }) {
+// Define the type for the context parameter
+interface Context {
+  params: { id: string };
+}
+
+export async function GET(request: NextRequest, { params }: Context) {
   try {
-    const { id } = context.params;
+    const { id } = params;
     await connectToDatabase();
     const token = request.headers.get('cookie')?.split('token=')[1];
 
@@ -30,9 +35,9 @@ export async function GET(request: NextRequest, context: { params: { id: string 
   }
 }
 
-export async function PUT(request: NextRequest, context: { params: { id: string } }) {
+export async function PUT(request: NextRequest, { params }: Context) {
   try {
-    const { id } = context.params;
+    const { id } = params;
     await connectToDatabase();
     const token = request.headers.get('cookie')?.split('token=')[1];
 
@@ -60,9 +65,9 @@ export async function PUT(request: NextRequest, context: { params: { id: string 
   }
 }
 
-export async function DELETE(request: NextRequest, context: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, { params }: Context) {
   try {
-    const { id } = context.params;
+    const { id } = params;
     await connectToDatabase();
     const token = request.headers.get('cookie')?.split('token=')[1];
 
