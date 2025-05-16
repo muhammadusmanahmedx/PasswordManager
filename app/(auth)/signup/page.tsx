@@ -10,11 +10,14 @@ export default function Signup() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setIsSubmitting(true);
+
     try {
       const res = await fetch('/api/auth/signup', {
         method: 'POST',
@@ -27,10 +30,12 @@ export default function Signup() {
       } else {
         const data = await res.json();
         setError(data.message || 'Signup failed');
+        setIsSubmitting(false);
       }
     } catch (err) {
       console.error('Signup error:', err);
       setError('An error occurred');
+      setIsSubmitting(false);
     }
   };
 
@@ -83,6 +88,7 @@ export default function Signup() {
                 onChange={(e) => setUsername(e.target.value)}
                 className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
                 required
+                disabled={isSubmitting}
               />
             </div>
             <div className="mb-4">
@@ -97,6 +103,7 @@ export default function Signup() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
                 required
+                disabled={isSubmitting}
               />
             </div>
             <div className="mb-6">
@@ -111,13 +118,22 @@ export default function Signup() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
                 required
+                disabled={isSubmitting}
               />
             </div>
             <button
               type="submit"
-              className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded transition duration-200"
+              className={`w-full flex justify-center items-center bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded transition duration-200 ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
+              disabled={isSubmitting}
             >
-              Sign up
+              {isSubmitting ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                  Signing up...
+                </>
+              ) : (
+                'Sign up'
+              )}
             </button>
           </form>
         </div>

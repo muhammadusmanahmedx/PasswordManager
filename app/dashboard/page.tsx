@@ -9,16 +9,11 @@ import {
 import { Credential } from '@/lib/types';
 import Link from 'next/link';
 import Head from 'next/head';
-import { Metadata } from 'next';
 
 interface User {
   username: string;
   email: string;
 }
-// export const metadata: Metadata = {
-//   title: "Dashboard | PassManager",
-//   description: "Store and access your passwords securely with AES-256 encryption. Free forever.",
-// };
 
 export default function PasswordDashboard() {
   const router = useRouter();
@@ -40,9 +35,9 @@ export default function PasswordDashboard() {
   const [passwordStrength, setPasswordStrength] = useState<'weak' | 'medium' | 'strong'>('weak');
   const [copiedField, setCopiedField] = useState<string | null>(null);
   const [showSecurityInfo, setShowSecurityInfo] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false); // New state to prevent double-clicks
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  // Password strength evaluation function
   const evaluatePasswordStrength = (password: string) => {
     if (!password) return 'weak';
 
@@ -104,7 +99,6 @@ export default function PasswordDashboard() {
     }
   }, [successMessage]);
 
-  // New useEffect to clear error message after 5 seconds
   useEffect(() => {
     if (error) {
       const timer = setTimeout(() => {
@@ -128,6 +122,8 @@ export default function PasswordDashboard() {
   }, [newCredential.password]);
 
   const handleLogout = async () => {
+    if (isLoggingOut) return;
+    setIsLoggingOut(true);
     try {
       const res = await fetch('/api/auth/logout', {
         method: 'POST',
@@ -139,9 +135,13 @@ export default function PasswordDashboard() {
         router.push('/');
       } else {
         setError('Logout failed');
+        setIsLoggingOut(false);
       }
     } catch (err) {
       setError('An error occurred during logout');
+      setIsLoggingOut(false);
+    } finally {
+      setTimeout(() => setIsLoggingOut(false), 5000);
     }
   };
 
@@ -188,7 +188,7 @@ export default function PasswordDashboard() {
   const confirmDelete = async () => {
     if (!deleteId || isDeleting) return;
 
-    setIsDeleting(true); // Disable further clicks
+    setIsDeleting(true);
     try {
       const res = await fetch(`/api/credentials/${deleteId}`, {
         method: 'DELETE',
@@ -206,7 +206,7 @@ export default function PasswordDashboard() {
       console.error('Error deleting credential:', err);
       setError('An error occurred while deleting the credential');
     } finally {
-      setIsDeleting(false); // Re-enable the button
+      setIsDeleting(false);
       setShowDeleteModal(false);
       setDeleteId(null);
     }
@@ -258,13 +258,8 @@ export default function PasswordDashboard() {
       strong: 'bg-green-500'
     };
 
-    
-
     return (
-
-      
       <div className="mt-1">
-     
         <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
           <div
             className={`h-full ${colors[passwordStrength]}`}
@@ -314,10 +309,20 @@ export default function PasswordDashboard() {
               </div>
               <button
                 onClick={handleLogout}
-                className="flex items-center text-gray-700 hover:text-green-600 transition-colors cursor-pointer"
+                className={`flex justify-center items-center cursor-pointer  text-green-600 font-medium py-2 px-3 rounded transition duration-200 ${isLoggingOut ? 'opacity-75 cursor-not-allowed' : ''}`}
+                disabled={isLoggingOut}
               >
-                <LogOut size={18} className="mr-1" />
-                <span className="hidden md:inline">Logout</span>
+                {isLoggingOut ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                    <span className="hidden md:inline">Logging out...</span>
+                  </>
+                ) : (
+                  <>
+                    <LogOut size={18} className="mr-1" />
+                    <span className="hidden md:inline">Logout</span>
+                  </>
+                )}
               </button>
             </div>
           </div>
@@ -745,7 +750,7 @@ export default function PasswordDashboard() {
               <button
                 onClick={confirmDelete}
                 className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors flex items-center"
-                disabled={isDeleting} // Disable button during deletion
+                disabled={isDeleting}
               >
                 <Trash size={16} className="mr-1" />
                 {isDeleting ? 'Deleting...' : 'Delete'}

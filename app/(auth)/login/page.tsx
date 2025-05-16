@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Shield } from 'lucide-react';
@@ -9,11 +9,15 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
@@ -25,18 +29,43 @@ export default function Login() {
       const data = await res.json();
 
       if (res.ok) {
-        setTimeout(() => {
-          router.push('/dashboard');
+        console.log('Login successful, attempting to redirect to /dashboard');
+        try {
+          await router.push('/dashboard');
+          console.log('Router push executed');
+          // Force a refresh to ensure dashboard loads
           router.refresh();
-        }, 500);
+          // Fallback navigation if router.push fails
+          setTimeout(() => {
+            if (window.location.pathname !== '/dashboard') {
+              console.warn('Router push failed, using window.location');
+              window.location.href = '/dashboard';
+            }
+          }, 1000);
+        } catch (navError) {
+          console.error('Navigation error:', navError);
+          setError('Failed to redirect to dashboard');
+          setIsSubmitting(false);
+        }
       } else {
+        console.error('Login failed:', data.message);
         setError(data.message || 'Login failed');
+        setIsSubmitting(false);
       }
     } catch (err) {
       console.error('Login error:', err);
       setError('An unexpected error occurred');
+      setIsSubmitting(false);
     }
   };
+
+  // Clear error after 5 seconds
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(''), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
@@ -81,11 +110,12 @@ export default function Login() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
                 required
+                disabled={isSubmitting}
               />
             </div>
 
             <div className="mb-6">
-              <label htmlFor="password"  className="block text-gray-800 font-medium mb-1">
+              <label htmlFor="password" className="block text-gray-800 font-medium mb-1">
                 Password
               </label>
               <input
@@ -96,14 +126,23 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
                 required
+                disabled={isSubmitting}
               />
             </div>
 
             <button
               type="submit"
-              className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded transition duration-200"
+              className={`w-full flex justify-center items-center bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded transition duration-200 ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
+              disabled={isSubmitting}
             >
-              Login
+              {isSubmitting ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                  Logging in...
+                </>
+              ) : (
+                'Login'
+              )}
             </button>
           </form>
         </div>
