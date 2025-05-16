@@ -77,7 +77,7 @@ export default function LandingPage() {
               <Link href="/pricing" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 transition-colors duration-200">Pricing</Link>
               <div className="border-t border-gray-200 pt-4 mt-2">
                 <Link href="/login" className="block w-full px-4 py-2 text-center text-base font-medium text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 transition-all duration-200">Log In</Link>
-                <Link href="/signup" className="block w-full px-4 py-2 text-center text-base font-medium text-white bg-green-600 rounded-md hover:bg-green-700 mt-2 transition-all duration-200 flex items-center justify-center">
+                <Link href="/signup" className="block w-full px-4 py-2 text-center text-base font-medium text-white bg-green-600 rounded-md hover:bg-green-700 mt-2 transition-all duration-200 items-center justify-center">
                   Get Started <ChevronRight className="ml-1 h-4 w-4" />
                 </Link>
               </div>
@@ -411,13 +411,13 @@ export default function LandingPage() {
                 name: "Sarah Johnson",
                 role: "CTO at TechCorp",
                 avatar: "https://media.istockphoto.com/id/1682296067/photo/happy-studio-portrait-or-professional-man-real-estate-agent-or-asian-businessman-smile-for.jpg?s=612x612&w=0&k=20&c=9zbG2-9fl741fbTWw5fNgcEEe4ll-JegrGlQQ6m54rg=",
-                quote: "PassManager's encryption and intuitive design have made credential management a breeze for our team. A must-have for security-conscious organizations."
+                quote: "PassManagers encryption and intuitive design have made credential management a breeze for our team. A must-have for security-conscious organizations."
               },
               {
                 name: "Michael Chen",
                 role: "Security Engineer",
                 avatar: "https://thumbs.dreamstime.com/b/profile-picture-caucasian-male-employee-posing-office-happy-young-worker-look-camera-workplace-headshot-portrait-smiling-190186649.jpg",
-                quote: "I've tried many password managers, but PassManager's seamless sync across all my devices is unmatched. Plus, the security gives me peace of mind."
+                quote: "Ive tried many password managers, but PassManagers seamless sync across all my devices is unmatched. Plus, the security gives me peace of mind."
               },
               {
                 name: "Emma Rodriguez",
@@ -643,7 +643,7 @@ export default function LandingPage() {
           },
           {
             question: "What happens if I forget my master password?",
-            answer: "For security reasons, we don't store your master password. However, you can set up account recovery options in advance, such as security questions or a recovery email, to help you regain access to your account if needed."
+            answer: "For security reasons, we dont store your master password. However, you can set up account recovery options in advance, such as security questions or a recovery email, to help you regain access to your account if needed."
           },
           {
             question: "Is PassManager really free?",
@@ -651,7 +651,7 @@ export default function LandingPage() {
           },
           {
             question: "How does cross-device sync work?",
-            answer: "Your encrypted data is synced securely through our servers. Even though your data passes through our servers, we can't read it because it's encrypted with your master password before it leaves your device. Only you hold the key to decrypt your information."
+            answer: "Your encrypted data is synced securely through our servers. Even though your data passes through our servers, we cant read it because its encrypted with your master password before it leaves your device. Only you hold the key to decrypt your information."
           },
           {
             question: "Can I share passwords with family or team members?",
@@ -669,7 +669,9 @@ export default function LandingPage() {
                   answer.classList.toggle('max-h-screen');
                   answer.classList.toggle('pb-4');
                 }
-                icon.classList.toggle('rotate-180');
+                if (icon) {
+                  icon.classList.toggle('rotate-180');
+                }
               }}
             >
               <span className="text-lg font-semibold text-green-800">{faq.question}</span>
