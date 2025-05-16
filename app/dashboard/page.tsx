@@ -8,11 +8,17 @@ import {
 } from 'lucide-react';
 import { Credential } from '@/lib/types';
 import Link from 'next/link';
+import Head from 'next/head';
+import { Metadata } from 'next';
 
 interface User {
   username: string;
   email: string;
 }
+// export const metadata: Metadata = {
+//   title: "Dashboard | PassManager",
+//   description: "Store and access your passwords securely with AES-256 encryption. Free forever.",
+// };
 
 export default function PasswordDashboard() {
   const router = useRouter();
@@ -252,8 +258,13 @@ export default function PasswordDashboard() {
       strong: 'bg-green-500'
     };
 
+    
+
     return (
+
+      
       <div className="mt-1">
+     
         <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
           <div
             className={`h-full ${colors[passwordStrength]}`}
