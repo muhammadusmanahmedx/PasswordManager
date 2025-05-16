@@ -3,14 +3,9 @@ import jwt from 'jsonwebtoken';
 import { connectToDatabase } from '@/lib/db';
 import Credential from '@/models/credential';
 
-// Define the type for the context parameter
-interface Context {
-  params: { id: string };
-}
-
-export async function GET(request: NextRequest, { params }: Context) {
+export async function GET(request: NextRequest) {
   try {
-    const { id } = params;
+    const id = request.nextUrl.pathname.split('/').pop(); // Extract ID from URL
     await connectToDatabase();
     const token = request.headers.get('cookie')?.split('token=')[1];
 
@@ -19,10 +14,7 @@ export async function GET(request: NextRequest, { params }: Context) {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string };
-    const credential = await Credential.findOne({
-      _id: id,
-      userId: decoded.userId,
-    });
+    const credential = await Credential.findOne({ _id: id, userId: decoded.userId });
 
     if (!credential) {
       return NextResponse.json({ message: 'Credential not found' }, { status: 404 });
@@ -35,9 +27,9 @@ export async function GET(request: NextRequest, { params }: Context) {
   }
 }
 
-export async function PUT(request: NextRequest, { params }: Context) {
+export async function PUT(request: NextRequest) {
   try {
-    const { id } = params;
+    const id = request.nextUrl.pathname.split('/').pop();
     await connectToDatabase();
     const token = request.headers.get('cookie')?.split('token=')[1];
 
@@ -65,9 +57,9 @@ export async function PUT(request: NextRequest, { params }: Context) {
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: Context) {
+export async function DELETE(request: NextRequest) {
   try {
-    const { id } = params;
+    const id = request.nextUrl.pathname.split('/').pop();
     await connectToDatabase();
     const token = request.headers.get('cookie')?.split('token=')[1];
 
