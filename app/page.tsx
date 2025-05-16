@@ -104,7 +104,7 @@ export default function LandingPage() {
           <Link href="/signup" className="px-8 py-4 text-white bg-green-600 rounded-lg text-lg font-semibold hover:bg-green-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center">
             Get Started Free <ArrowRight className="ml-2 h-5 w-5" />
           </Link>
-          <Link href="/demo" className="px-8 py-4 text-gray-700 bg-white border border-gray-300 rounded-lg text-lg font-semibold hover:bg-gray-50 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center">
+          <Link href="" className="px-8 py-4 text-gray-700 bg-white border border-gray-300 rounded-lg text-lg font-semibold hover:bg-gray-50 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center">
             <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
             </svg>
