@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-  "migrate-users": "ts-node -r dotenv/config scripts/migrate-users.ts",
+    "migrate-users": "ts-node -r dotenv/config scripts/migrate-users.ts",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -27,7 +27,6 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
-    "@types/next-auth": "^3.13.0",
     "@types/node": "^20.17.47",
     "@types/react": "^19",
     "@types/react-dom": "^19",
