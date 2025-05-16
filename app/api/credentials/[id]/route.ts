@@ -8,23 +8,24 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
+    const { id } = params; // Extract id first
     await connectToDatabase();
     const token = request.headers.get('cookie')?.split('token=')[1];
-
+    
     if (!token) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
-
+    
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string };
-    const credential = await Credential.findOne({ 
-      _id: params.id,
-      userId: decoded.userId 
+    const credential = await Credential.findOne({
+      _id: id,
+      userId: decoded.userId
     });
-
+    
     if (!credential) {
       return NextResponse.json({ message: 'Credential not found' }, { status: 404 });
     }
-
+    
     return NextResponse.json(credential);
   } catch (error) {
     console.error('Credential API: Error', error);
@@ -37,6 +38,7 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
+    const { id } = params;
     await connectToDatabase();
     const token = request.headers.get('cookie')?.split('token=')[1];
 
@@ -46,12 +48,9 @@ export async function PUT(
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string };
     const { websiteUrl, username, password } = await request.json();
-    
+
     const credential = await Credential.findOneAndUpdate(
-      { 
-        _id: params.id,
-        userId: decoded.userId 
-      },
+      { _id: id, userId: decoded.userId },
       { websiteUrl, username, password },
       { new: true }
     );
@@ -72,24 +71,25 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
+    const { id } = params; // Extract id first
     await connectToDatabase();
     const token = request.headers.get('cookie')?.split('token=')[1];
-
+    
     if (!token) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
-
+    
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string };
     
-    const credential = await Credential.findOneAndDelete({ 
-      _id: params.id,
-      userId: decoded.userId 
+    const credential = await Credential.findOneAndDelete({
+      _id: id,
+      userId: decoded.userId
     });
-
+    
     if (!credential) {
       return NextResponse.json({ message: 'Credential not found or unauthorized' }, { status: 404 });
     }
-
+    
     return NextResponse.json({ message: 'Credential deleted successfully' });
   } catch (error) {
     console.error('Credential API: Error deleting', error);

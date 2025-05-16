@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Shield } from 'lucide-react';
 
 export default function Signup() {
-  const [name, setName] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
@@ -15,13 +15,13 @@ export default function Signup() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    console.log('Submitting signup form:', { name, email, password });
     try {
       const res = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ username, email, password }),
       });
+
       if (res.ok) {
         router.push('/login');
       } else {
@@ -72,15 +72,15 @@ export default function Signup() {
           )}
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label htmlFor="name" className="block text-gray-800 font-medium mb-1">
-                Full Name
+              <label htmlFor="username" className="block text-gray-800 font-medium mb-1">
+                Username
               </label>
               <input
-                id="name"
+                id="username"
                 type="text"
-                placeholder="John Doe"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                placeholder="johndoe"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
                 required
               />
@@ -106,7 +106,7 @@ export default function Signup() {
               <input
                 id="password"
                 type="password"
-                placeholder='••••••••'
+                placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
