@@ -4,25 +4,34 @@ pipeline {
   environment {
     COMPOSE_PROJECT_NAME = 'shop-sphere-jenkins'
     COMPOSE_FILE = 'docker-compose.yaml'
-    MONGODB_URI = credentials('MONGODB_URI')
-    JWT_SECRET = credentials('JWT_SECRET')
   }
 
   stages {
     stage('Clone') {
       steps {
-        git branch: 'main', url: 'https://github.com/your-username/your-repo.git'
+        git credentialsId: 'github-creds', url: 'https://github.com/muhammadusmanahmedx/PasswordManager.git', branch: 'main'
       }
     }
 
-    stage('Build & Deploy') {
+    stage('Clean up') {
       steps {
         sh '''
-        export MONGODB_URI=$MONGODB_URI
-        export JWT_SECRET=$JWT_SECRET
-        docker-compose -p $COMPOSE_PROJECT_NAME -f $COMPOSE_FILE build
-        docker-compose -p $COMPOSE_PROJECT_NAME -f $COMPOSE_FILE up -d
+          docker-compose -p $COMPOSE_PROJECT_NAME -f $COMPOSE_FILE down --volumes || true
+          docker system prune -af || true
+          docker volume prune -f || true
         '''
+      }
+    }
+
+    stage('Build') {
+      steps {
+        sh 'docker-compose -p $COMPOSE_PROJECT_NAME -f $COMPOSE_FILE build --no-cache'
+      }
+    }
+
+    stage('Deploy') {
+      steps {
+        sh 'docker-compose -p $COMPOSE_PROJECT_NAME -f $COMPOSE_FILE up -d'
       }
     }
   }
