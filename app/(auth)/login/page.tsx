@@ -29,24 +29,9 @@ export default function Login() {
       const data = await res.json();
 
       if (res.ok) {
-        console.log('Login successful, attempting to redirect to /dashboard');
-        try {
-          await router.push('/dashboard');
-          console.log('Router push executed');
-          // Force a refresh to ensure dashboard loads
-          router.refresh();
-          // Fallback navigation if router.push fails
-          setTimeout(() => {
-            if (window.location.pathname !== '/dashboard') {
-              console.warn('Router push failed, using window.location');
-              window.location.href = '/dashboard';
-            }
-          }, 1000);
-        } catch (navError) {
-          console.error('Navigation error:', navError);
-          setError('Failed to redirect to dashboard');
-          setIsSubmitting(false);
-        }
+        console.log('Login successful, redirecting to /dashboard');
+        // Hard redirect to ensure JWT cookie is sent to server
+        window.location.href = '/dashboard';
       } else {
         console.error('Login failed:', data.message);
         setError(data.message || 'Login failed');
@@ -70,7 +55,7 @@ export default function Login() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
       <div className="bg-white w-full max-w-md rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        {/* Combined Header */}
+        {/* Header */}
         <div className="border-b border-gray-200 px-6 py-4 bg-white">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <Link href="/" className="flex items-center mb-4 md:mb-0">

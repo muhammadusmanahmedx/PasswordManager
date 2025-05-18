@@ -842,7 +842,7 @@ export default function PasswordDashboard() {
         </div>
 
         {/* Security Features Section */}
-        <div className="mt-8 grid grid-cols-1 gap-4">
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-white rounded-lg shadow-md border border-gray-200 p-4 flex flex-col items-center text-center">
             <div className="bg-green-100 rounded-full p-3 mb-3">
               <Lock size={24} className="text-green-600" />
@@ -882,7 +882,7 @@ export default function PasswordDashboard() {
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 px-4">
+        <div className="fixed inset-0 bg-gray-300 bg-opacity-30 flex items-center justify-center z-50 px-4">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-4 sm:p-6 animate-fadeIn">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-red-600 flex items-center">
