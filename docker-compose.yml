@@ -1,11 +1,9 @@
-version: "3.9"
-
 services:
   web:
     build: .
     ports:
-      - "3000:3000"
+      - "5100:3000"
     environment:
       NODE_ENV: production
-    env_file:
-      - .env.local
+     MONGODB_URI : mongodb+srv://usmanahmed:33773377@credentialsdata.as4cxdc.mongodb.net/?retryWrites=true&w=majority&appName=CredentialsData
+JWT_SECRET : 7a5e1856d39867d33a7a05d4b79ff358
