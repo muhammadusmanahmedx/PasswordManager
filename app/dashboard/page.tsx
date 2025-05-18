@@ -37,6 +37,7 @@ export default function PasswordDashboard() {
   const [showSecurityInfo, setShowSecurityInfo] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const evaluatePasswordStrength = (password: string) => {
     if (!password) return 'weak';
@@ -86,8 +87,8 @@ export default function PasswordDashboard() {
   };
 
   useEffect(() => {
-    fetchCurrentUser();
     fetchCredentials();
+    fetchCurrentUser();
   }, []);
 
   useEffect(() => {
@@ -147,19 +148,23 @@ export default function PasswordDashboard() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+
     try {
       const method = editingId ? 'PUT' : 'POST';
       const url = editingId ? `/api/credentials/${editingId}` : '/api/credentials';
+
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
         body: JSON.stringify(newCredential),
       });
+
       if (res.ok) {
         setNewCredential({ websiteUrl: '', username: '', password: '' });
         setEditingId(null);
-        setSuccessMessage(editingId ? 'Credential successfully updated!' : 'New credential successfully added!');
+        setSuccessMessage('Credential saved successfully!');
         await fetchCredentials();
       } else {
         const errorData = await res.json();
@@ -168,6 +173,8 @@ export default function PasswordDashboard() {
     } catch (err) {
       console.error('Error submitting credential:', err);
       setError('An error occurred while saving the credential');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -287,54 +294,65 @@ export default function PasswordDashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* Header */}
-      <header className="bg-white shadow-md border-b">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="flex justify-between items-center py-4">
-            <Link href="/" className="flex items-center mb-0">
-              <div className="bg-green-600 rounded-full p-2">
-                <Shield className="h-7 w-7 text-white" />
-              </div>
-              <span className="ml-2 text-xl font-bold text-gray-900">PassManager</span>
-            </Link>
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center">
-                <div className="bg-green-100 rounded-full h-8 w-8 flex items-center justify-center mr-2">
-                  <span className="text-green-600 font-semibold">
-                    {currentUser?.username?.charAt(0).toUpperCase() || 'U'}
-                  </span>
-                </div>
-                <span className="text-gray-700 cursor-default hidden md:inline">
-                  {currentUser?.username || 'User'}
-                </span>
-              </div>
-              <button
-                onClick={handleLogout}
-                className={`flex justify-center items-center cursor-pointer  text-green-600 font-medium py-2 px-3 rounded transition duration-200 ${isLoggingOut ? 'opacity-75 cursor-not-allowed' : ''}`}
-                disabled={isLoggingOut}
-              >
-                {isLoggingOut ? (
-                  <>
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                    <span className="hidden md:inline">Logging out...</span>
-                  </>
-                ) : (
-                  <>
-                    <LogOut size={18} className="mr-1" />
-                    <span className="hidden md:inline">Logout</span>
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
+<header className="bg-white shadow-md border-b">
+  <div className="container mx-auto px-4 max-w-7xl">
+    <div className="flex justify-between items-center py-4 flex-wrap">
+      {/* Logo and name */}
+      <Link href="/" className="flex items-center">
+        <div className="bg-green-600 rounded-full p-2">
+          <Shield className="h-7 w-7 text-white" />
         </div>
-      </header>
+        <span className="ml-2 text-xl font-bold text-gray-900 whitespace-nowrap">
+          PassManager
+        </span>
+      </Link>
+
+      {/* Right section */}
+      <div className="flex items-center gap-2 flex-shrink-0">
+        {/* Avatar */}
+        <div className="bg-green-100 rounded-full h-8 w-8 flex items-center justify-center">
+          <span className="text-green-600 font-semibold text-sm">
+            {currentUser?.username?.charAt(0).toUpperCase() || 'U'}
+          </span>
+        </div>
+
+        {/* Logout Button */}
+        <button
+          onClick={handleLogout}
+          className={`whitespace-nowrap flex items-center text-green-600 font-medium py-1.5 px-3 rounded transition duration-200 text-sm max-w-[140px] ${
+            isLoggingOut ? 'opacity-75 cursor-not-allowed' : 'hover:bg-green-50'
+          }`}
+          disabled={isLoggingOut}
+        >
+          {isLoggingOut ? (
+            <>
+              <div className="w-4 h-4 border-2 border-green-600 border-t-transparent rounded-full animate-spin mr-2" />
+              <span className="hidden sm:inline">Logging out...</span>
+            </>
+          ) : (
+            <>
+              <LogOut size={16} className="mr-1" />
+              <span className="hidden sm:inline">Logout</span>
+              <span className="inline sm:hidden"></span>
+            </>
+          )}
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+
+
+
 
       <div className="container mx-auto px-4 max-w-6xl py-8">
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
           <h1 className="text-2xl font-bold text-gray-800 cursor-default">Password Dashboard</h1>
           <button
             onClick={() => setShowSecurityInfo(!showSecurityInfo)}
-            className="flex items-center text-green-600 hover:text-green-800 transition-colors cursor-pointer bg-green-50 px-3 py-1 rounded-full text-sm"
+            className="flex items-center text-green-600 hover:text-green-800 transition-colors bg-green-50 px-3 py-2 rounded-full text-sm min-w-[120px]"
           >
             <Lock size={16} className="mr-1" />
             <span>Security Info</span>
@@ -343,17 +361,17 @@ export default function PasswordDashboard() {
 
         {/* Security Information Panel */}
         {showSecurityInfo && (
-          <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden mb-8 p-6 animate-fadeIn">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+          <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden mb-8 p-4 sm:p-6 animate-fadeIn">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4 flex items-center">
               <Lock className="text-green-600 mr-2" size={20} />
               Security Information
             </h2>
             <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded mb-4">
-              <p className="text-green-800">
+              <p className="text-green-800 text-sm sm:text-base">
                 <strong>AES-256 Encryption:</strong> Your passwords are encrypted using AES-256, one of the most secure encryption standards available.
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-4 sm:gap-6">
               <div className="bg-gray-50 p-4 rounded border border-gray-200">
                 <h3 className="font-semibold text-gray-800 mb-2 flex items-center">
                   <Database size={18} className="text-green-600 mr-2" />
@@ -379,7 +397,7 @@ export default function PasswordDashboard() {
             </div>
             <button
               onClick={() => setShowSecurityInfo(false)}
-              className="mt-4 text-green-600 hover:text-green-800 transition-colors"
+              className="mt-4 text-green-600 hover:text-green-800 transition-colors px-3 py-2 rounded min-w-[100px] text-sm"
             >
               Close
             </button>
@@ -404,8 +422,8 @@ export default function PasswordDashboard() {
 
         {/* Add/Edit Credential Form */}
         <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden mb-8">
-          <div className="p-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4 cursor-default flex items-center">
+          <div className="p-4 sm:p-6">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4 cursor-default flex items-center">
               {editingId ? (
                 <>
                   <Edit className="text-green-600 mr-2" size={20} />
@@ -481,16 +499,16 @@ export default function PasswordDashboard() {
                 </div>
               </div>
 
-              <div className="mt-4 flex justify-between">
+              <div className="mt-4 flex flex-col sm:flex-row sm:justify-between gap-3">
                 <button
                   type="button"
                   onClick={generateSecurePassword}
-                  className="text-green-600 border border-green-600 px-4 py-2 rounded hover:bg-green-50 transition-colors cursor-pointer flex items-center"
+                  className="text-green-600 border border-green-600 px-4 py-2 rounded hover:bg-green-50 transition-colors cursor-pointer flex items-center justify-center min-w-[140px] text-sm"
                 >
                   <Lock size={16} className="mr-1" />
                   Generate Strong Password
                 </button>
-                <div className="flex">
+                <div className="flex flex-col sm:flex-row gap-3">
                   {editingId && (
                     <button
                       type="button"
@@ -498,24 +516,39 @@ export default function PasswordDashboard() {
                         setEditingId(null);
                         setNewCredential({ websiteUrl: '', username: '', password: '' });
                       }}
-                      className="mr-2 bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition-colors cursor-pointer"
+                      className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition-colors cursor-pointer min-w-[100px] text-sm"
                     >
                       Cancel
                     </button>
                   )}
                   <button
                     type="submit"
-                    className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 focus:outline-none transition-colors cursor-pointer flex items-center"
+                    disabled={isSubmitting}
+                    className={`bg-green-600 text-white px-4 py-2 rounded flex items-center justify-center transition-colors cursor-pointer min-w-[140px] text-sm ${
+                      isSubmitting ? 'opacity-60 cursor-not-allowed' : 'hover:bg-green-700'
+                    }`}
                   >
-                    {editingId ? (
+                    {isSubmitting ? (
                       <>
-                        <CheckCircle size={16} className="mr-1" />
-                        Update Credential
+                        <svg className="animate-spin mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                        </svg>
+                        {editingId ? 'Updating...' : 'Adding...'}
                       </>
                     ) : (
                       <>
-                        <Plus size={16} className="mr-1" />
-                        Add Credential
+                        {editingId ? (
+                          <>
+                            <CheckCircle size={16} className="mr-1" />
+                            Update Credential
+                          </>
+                        ) : (
+                          <>
+                            <Plus size={16} className="mr-1" />
+                            Add Credential
+                          </>
+                        )}
                       </>
                     )}
                   </button>
@@ -527,16 +560,16 @@ export default function PasswordDashboard() {
 
         {/* Saved Credentials Section */}
         <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
-          <div className="p-6">
-            <div className="mb-4 flex flex-col md:flex-row justify-between items-start md:items-center">
-              <h3 className="text-lg font-semibold text-gray-800 mb-3 md:mb-0 cursor-default flex items-center">
+          <div className="p-4 sm:p-6">
+            <div className="mb-4 flex flex-col gap-3">
+              <h3 className="text-lg font-semibold text-gray-800 cursor-default flex items-center">
                 <Database className="text-green-600 mr-2" size={18} />
                 Your Saved Credentials
                 <span className="ml-2 bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
                   {filteredCredentials.length} items
                 </span>
               </h3>
-              <div className="relative w-full md:w-64">
+              <div className="relative w-full">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <Search size={18} className="text-gray-400" />
                 </div>
@@ -550,15 +583,16 @@ export default function PasswordDashboard() {
               </div>
             </div>
 
-            <div className="overflow-x-auto">
+            {/* Desktop Table View */}
+            <div className="hidden md:block overflow-x-auto">
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="bg-gray-100 text-left">
-                    <th className="p-3 font-medium text-gray-700 cursor-default">#</th>
-                    <th className="p-3 font-medium text-gray-700 cursor-default">Website</th>
-                    <th className="p-3 font-medium text-gray-700 cursor-default">Username</th>
-                    <th className="p-3 font-medium text-gray-700 cursor-default">Password</th>
-                    <th className="p-3 font-medium text-gray-700 cursor-default">Actions</th>
+                    <th className="p-3 font-medium text-gray-700 cursor-default w-[5%]">#</th>
+                    <th className="p-3 font-medium text-gray-700 cursor-default w-[30%]">Website</th>
+                    <th className="p-3 font-medium text-gray-700 cursor-default w-[25%]">Username</th>
+                    <th className="p-3 font-medium text-gray-700 cursor-default w-[25%]">Password</th>
+                    <th className="p-3 font-medium text-gray-700 cursor-default w-[15%]">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -592,11 +626,11 @@ export default function PasswordDashboard() {
                           </div>
                         </td>
                         <td className="p-3">
-                          <div className="flex items-center">
+                          <div className="flex items-center flex-wrap gap-1">
                             <span className="text-gray-700 cursor-default">{cred.username}</span>
                             <button
                               onClick={() => copyToClipboard(cred.username, `username-${cred._id}`)}
-                              className="ml-2 text-gray-500 hover:text-green-600 transition-colors cursor-pointer"
+                              className="ml-2 text-gray-500 hover:text-green-600 transition-colors cursor-pointer p-2"
                               title="Copy username"
                             >
                               <Copy size={14} />
@@ -606,47 +640,65 @@ export default function PasswordDashboard() {
                             )}
                           </div>
                         </td>
-                        <td className="p-3">
-                          <div className="flex items-center">
-                            <span className="text-gray-700 cursor-default font-mono">
-                              {showPasswords[cred._id] ? cred.password : '•••••••••'}
-                            </span>
-                            <button
-                              onClick={() => togglePasswordVisibility(cred._id)}
-                              className="ml-2 text-gray-500 hover:text-green-600 transition-colors cursor-pointer"
-                              title={showPasswords[cred._id] ? 'Hide password' : 'Show password'}
-                            >
-                              {showPasswords[cred._id] ?
-                                <EyeOff size={14} /> :
-                                <Eye size={14} />
-                              }
-                            </button>
-                            {showPasswords[cred._id] && (
-                              <button
-                                onClick={() => copyToClipboard(cred.password, `password-${cred._id}`)}
-                                className="ml-2 text-gray-500 hover:text-green-600 transition-colors cursor-pointer"
-                                title="Copy password"
-                              >
-                                <Copy size={14} />
-                              </button>
-                            )}
-                            {copiedField === `password-${cred._id}` && (
-                              <span className="text-xs text-green-600 ml-1">Copied!</span>
-                            )}
-                          </div>
-                        </td>
+<td className="p-3">
+  <div className="flex items-start">
+    {/* Password text */}
+    <div className="inline-block">
+      <span className="text-gray-700 cursor-default font-mono break-all whitespace-normal">
+        {showPasswords[cred._id] 
+          ? cred.password 
+          : Array(cred.password.length).fill('•').join('')}
+      </span>
+    </div>
+
+    {/* Icons and Copied text inline */}
+    <div className="flex items-center flex-shrink-0 ml-2 space-x-1">
+      {/* Toggle visibility */}
+      <button
+        onClick={() => togglePasswordVisibility(cred._id)}
+        className="text-gray-500 hover:text-green-600 transition-colors cursor-pointer p-1"
+        title={showPasswords[cred._id] ? 'Hide password' : 'Show password'}
+      >
+        {showPasswords[cred._id] ? <EyeOff size={14} /> : <Eye size={14} />}
+      </button>
+
+      {/* Copy button - only clickable when password is shown */}
+      <button
+        onClick={() => copyToClipboard(cred.password, `password-${cred._id}`)}
+        className={`text-gray-500 hover:text-green-600 transition-colors cursor-pointer p-1 ${
+          showPasswords[cred._id] ? '' : 'invisible'
+        }`}
+        title="Copy password"
+      >
+        <Copy size={14} />
+      </button>
+
+      {/* Copied text always inline with reserved space */}
+      <span
+        className={`text-xs text-green-600 min-w-[55px] transition-opacity duration-200 ${
+          copiedField === `password-${cred._id}` ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
+        Copied!
+      </span>
+    </div>
+  </div>
+</td>
+
+
+
                         <td className="p-3">
                           <div className="flex gap-3">
                             <button
                               onClick={() => handleEdit(cred)}
-                              className="text-green-600 hover:text-green-800 transition-colors cursor-pointer rounded-full p-1 hover:bg-green-50"
+                              className="text-green-600 hover:text-green-800 transition-colors cursor-pointer rounded-full p-2 hover:bg-green-50"
                               title="Edit"
                             >
                               <Edit size={16} />
                             </button>
                             <button
                               onClick={() => initiateDelete(cred._id)}
-                              className="text-red-500 hover:text-red-700 transition-colors cursor-pointer rounded-full p-1 hover:bg-red-50"
+                              className="text-red-500 hover:text-red-700 transition-colors cursor-pointer rounded-full p-2 hover:bg-red-50"
                               title="Delete"
                             >
                               <Trash size={16} />
@@ -676,11 +728,121 @@ export default function PasswordDashboard() {
                 </tbody>
               </table>
             </div>
+
+            {/* Mobile Card View */}
+            <div className="md:hidden space-y-4">
+              {filteredCredentials.length > 0 ? (
+                filteredCredentials.map((cred, index) => (
+                  <div key={cred._id} className="border rounded-lg p-4 bg-gray-50">
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="flex items-center">
+                        <img
+                          src={getWebsiteIcon(cred.websiteUrl)}
+                          alt="Site Icon"
+                          className="h-5 w-5 mr-2 rounded-sm"
+                        />
+                        <span className="text-gray-800 font-medium">{cred.websiteUrl}</span>
+                      </div>
+                      <span className="text-gray-500 text-sm">#{index + 1}</span>
+                    </div>
+                    <div className="space-y-2">
+                      <div>
+                        <span className="text-gray-600 text-sm">Username:</span>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="text-gray-700 break-all">{cred.username}</span>
+                          <button
+                            onClick={() => copyToClipboard(cred.username, `username-${cred._id}`)}
+                            className="text-gray-500 hover:text-green-600 transition-colors cursor-pointer p-2"
+                            title="Copy username"
+                          >
+                            <Copy size={14} />
+                          </button>
+                          {copiedField === `username-${cred._id}` && (
+                            <span className="text-xs text-green-600">Copied!</span>
+                          )}
+                        </div>
+                      </div>
+                      <div>
+                        <span className="text-gray-600 text-sm">Password:</span>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="text-gray-700 font-mono break-all">
+                            {showPasswords[cred._id] ? cred.password : '•••••••••'}
+                          </span>
+                          <button
+                            onClick={() => togglePasswordVisibility(cred._id)}
+                            className="text-gray-500 hover:text-green-600 transition-colors cursor-pointer p-2"
+                            title={showPasswords[cred._id] ? 'Hide password' : 'Show password'}
+                          >
+                            {showPasswords[cred._id] ? <EyeOff size={14} /> : <Eye size={14} />}
+                          </button>
+                          {showPasswords[cred._id] && (
+                            <div className="flex items-center gap-1">
+                              <button
+                                onClick={() => copyToClipboard(cred.password, `password-${cred._id}`)}
+                                className="text-gray-500 hover:text-green-600 transition-colors cursor-pointer p-2"
+                                title="Copy password"
+                              >
+                                <Copy size={14} />
+                              </button>
+                              {copiedField === `password-${cred._id}` && (
+                                <span className="text-xs text-green-600">Copied!</span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center mt-2">
+                        <a
+                          href={`https://${cred.websiteUrl.replace(/^https?:\/\//, '')}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-green-600 hover:text-green-800 flex items-center"
+                        >
+                          <ExternalLink size={12} className="mr-1" />
+                          Visit site
+                        </a>
+                        <div className="flex gap-3">
+                          <button
+                            onClick={() => handleEdit(cred)}
+                            className="text-green-600 hover:text-green-800 transition-colors cursor-pointer rounded-full p-2 hover:bg-green-50"
+                            title="Edit"
+                          >
+                            <Edit size={16} />
+                          </button>
+                          <button
+                            onClick={() => initiateDelete(cred._id)}
+                            className="text-red-500 hover:text-red-700 transition-colors cursor-pointer rounded-full p-2 hover:bg-red-50"
+                            title="Delete"
+                          >
+                            <Trash size={16} />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="p-6 text-center text-gray-500 cursor-default">
+                  {searchTerm ? (
+                    <div className="flex flex-col items-center">
+                      <Search size={24} className="mb-2 text-gray-400" />
+                      <p>No credentials match your search</p>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center">
+                      <Database size={24} className="mb-2 text-gray-400" />
+                      <p>No credentials saved yet</p>
+                      <p className="text-sm text-gray-400 mt-1">Add your first credential above</p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Security Features Section */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="mt-8 grid grid-cols-1 gap-4">
           <div className="bg-white rounded-lg shadow-md border border-gray-200 p-4 flex flex-col items-center text-center">
             <div className="bg-green-100 rounded-full p-3 mb-3">
               <Lock size={24} className="text-green-600" />
@@ -720,8 +882,8 @@ export default function PasswordDashboard() {
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6 animate-fadeIn">
+        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-4 sm:p-6 animate-fadeIn">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-red-600 flex items-center">
                 <AlertTriangle size={20} className="mr-2" />
@@ -729,27 +891,27 @@ export default function PasswordDashboard() {
               </h3>
               <button
                 onClick={cancelDelete}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-gray-500 hover:text-gray-700 p-2"
               >
                 <X size={20} />
               </button>
             </div>
             <div className="bg-red-50 p-4 rounded-md mb-4 flex">
               <AlertTriangle size={24} className="text-red-500 mr-3 flex-shrink-0" />
-              <p className="text-gray-800">
+              <p className="text-gray-800 text-sm sm:text-base">
                 Are you sure you want to delete this credential? This action cannot be undone.
               </p>
             </div>
             <div className="flex justify-end space-x-3">
               <button
                 onClick={cancelDelete}
-                className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors"
+                className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors min-w-[100px] text-sm"
               >
                 Cancel
               </button>
               <button
                 onClick={confirmDelete}
-                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors flex items-center"
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors flex items-center justify-center min-w-[100px] text-sm"
                 disabled={isDeleting}
               >
                 <Trash size={16} className="mr-1" />
@@ -768,6 +930,9 @@ export default function PasswordDashboard() {
         }
         .animate-fadeIn {
           animation: fadeIn 0.3s ease-out forwards;
+        }
+        .break-all {
+          word-break: break-all;
         }
       `}</style>
     </div>
