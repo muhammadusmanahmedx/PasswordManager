@@ -30,7 +30,7 @@ export default function Login() {
 
       if (res.ok) {
         console.log('Login successful, redirecting to /dashboard');
-        // Hard redirect to ensure JWT cookie is sent to server
+        // Hard redirect (ensures cookie is sent)
         window.location.href = '/dashboard';
       } else {
         console.error('Login failed:', data.message);
@@ -44,7 +44,6 @@ export default function Login() {
     }
   };
 
-  // Clear error after 5 seconds
   useEffect(() => {
     if (error) {
       const timer = setTimeout(() => setError(''), 5000);
@@ -55,7 +54,6 @@ export default function Login() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
       <div className="bg-white w-full max-w-md rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        {/* Header */}
         <div className="border-b border-gray-200 px-6 py-4 bg-white">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <Link href="/" className="flex items-center mb-4 md:mb-0">
@@ -71,7 +69,6 @@ export default function Login() {
           </div>
         </div>
 
-        {/* Login Form */}
         <div className="px-6 py-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Login</h2>
           <p className="text-gray-600 mb-6">Enter your credentials to access your account</p>
@@ -133,7 +130,6 @@ export default function Login() {
         </div>
       </div>
 
-      {/* Signup Link */}
       <div className="mt-6 text-gray-600">
         Don't have an account?{' '}
         <Link href="/signup" className="text-green-600 hover:underline">
