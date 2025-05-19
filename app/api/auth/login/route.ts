@@ -1,9 +1,9 @@
+// app/api/auth/login/route.ts
+
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { connectToDatabase } from '@/lib/db';
-// import User from '@/models/Users;
-
 import User from '@/models/Users';
 
 export async function POST(request: Request) {
@@ -25,14 +25,17 @@ export async function POST(request: Request) {
       expiresIn: '1h',
     });
 
+    const isHttps = request.headers.get('x-forwarded-proto') === 'https';
+
     const response = NextResponse.json({ message: 'Login successful' });
     response.cookies.set('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      secure: isHttps, // adaptive: secure on Vercel, not on EC2 HTTP
+      sameSite: 'lax',
       maxAge: 3600,
       path: '/',
     });
+
     return response;
   } catch (error) {
     console.error('Login API error:', error);
