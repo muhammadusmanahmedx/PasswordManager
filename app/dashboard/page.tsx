@@ -308,13 +308,20 @@ export default function PasswordDashboard() {
       </Link>
 
       {/* Right section */}
-      <div className="flex items-center gap-2 flex-shrink-0">
+      <div className="flex items-center gap-4 flex-shrink-0">
         {/* Avatar */}
         <div className="bg-green-100 rounded-full h-8 w-8 flex items-center justify-center">
           <span className="text-green-600 font-semibold text-sm">
             {currentUser?.username?.charAt(0).toUpperCase() || 'U'}
           </span>
         </div>
+
+        {/* Welcome message (visible only on desktop, after avatar) */}
+        {currentUser && (
+          <span className="hidden md:flex text-gray-700 font-medium text-sm">
+            Welcome, {currentUser.username}
+          </span>
+        )}
 
         {/* Logout Button */}
         <button
