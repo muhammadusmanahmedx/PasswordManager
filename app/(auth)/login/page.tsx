@@ -60,7 +60,7 @@ export default function Login() {
           <div className="flex flex-col md:flex-row items-center justify-between">
             <Link href="/" className="flex items-center mb-4 md:mb-0">
               <Shield className="h-8 w-8 text-green-600" />
-              <span className="ml-2 text-xl font-bold text-gray-900">PassManager</span>
+              <span className="ml-2 text-xl font-bold text-gray-900">Passbuild2Manager</span>
             </Link>
             <Link href="/" className="flex items-center text-gray-700 hover:text-gray-900 text-sm">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
