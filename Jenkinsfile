@@ -13,6 +13,21 @@ pipeline {
       }
     }
 
+    stage('Inject Credentials') {
+      environment {
+        MONGODB_URI = credentials('MONGODB_URI')
+        JWT_SECRET = credentials('JWT_SECRET')
+      }
+      steps {
+        script {
+          writeFile file: ".env", text: """
+            MONGODB_URI=$MONGODB_URI
+            JWT_SECRET=$JWT_SECRET
+          """
+        }
+      }
+    }
+
     stage('Clean up') {
       steps {
         sh '''
@@ -38,7 +53,7 @@ pipeline {
 
   post {
     always {
-      echo 'Pipeline finished.'
+      echo '✅ Pipeline finished.'
     }
   }
 }
