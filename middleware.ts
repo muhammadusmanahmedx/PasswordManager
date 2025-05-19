@@ -1,3 +1,5 @@
+// app/middleware.ts or src/middleware.ts
+
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
@@ -7,11 +9,13 @@ export function middleware(request: NextRequest) {
 
   if (pathname.startsWith('/dashboard') || pathname.startsWith('/api/credentials')) {
     if (!token) {
-      console.log('Middleware: No token found, redirecting to /login');
-      return NextResponse.redirect(new URL('/login', request.url));
+      console.log('🔒 Middleware: No token, redirecting to /login');
+      const loginUrl = new URL('/login', request.url);
+      loginUrl.searchParams.set('redirect', pathname); // optional: redirect back after login
+      return NextResponse.redirect(loginUrl);
     }
-    console.log('Middleware: Token found, proceeding');
-    return NextResponse.next();
+
+    console.log('✅ Middleware: Token found, access granted');
   }
 
   return NextResponse.next();
