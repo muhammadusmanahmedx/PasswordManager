@@ -94,142 +94,56 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <div className="relative overflow-hidden pt-8 md:pt-0 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="text-center lg:text-left animate-fade-in">
-              <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 mb-6">
-                <span className="animate-pulse">🔒</span> <span className="ml-1">TRUSTED BY 1M+ USERS</span>
-              </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
-                Fortify Your Data <br className="hidden lg:block"/> with <span className="text-green-600">PassManager</span>
-              </h1>
-              <p className="mt-6 max-w-md mx-auto lg:mx-0 text-xl text-gray-600">
-                State-of-the-art data centers with AES-256 encryption ensure your passwords are locked down tight.
-              </p>
-              <div className="mt-10 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
-                <Link href="/signup" className="px-8 py-4 text-white bg-green-600 rounded-lg text-lg font-semibold hover:bg-green-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center space-x-2">
-                  <span>Get Started Free</span>
-                  <ArrowRight className="h-5 w-5" />
-                </Link>
-                <Link href="" className="px-8 py-4 text-gray-700 bg-white border border-gray-300 rounded-lg text-lg font-semibold hover:bg-gray-50 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center space-x-2">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
-                  </svg>
-                  <span>Explore Data Center</span>
-                </Link>
-              </div>
-              <div className="mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-3 text-gray-500">
-                <div className="flex items-center">
-                  <CheckCircle className="h-5 w-5 text-green-500 animate-pulse" />
-                  <span className="ml-1.5">No Master Password Required</span>
-                </div>
-                <div className="flex items-center">
-                  <CheckCircle className="h-5 w-5 text-green-500 animate-pulse" />
-                  <span className="ml-1.5">End-to-End Encryption</span>
-                </div>
-              </div>
-            </div>
-            <div className="flex justify-center relative h-full">
-              <div className="relative w-full h-full">
-                <svg className="w-full h-full" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  {/* SVG content remains unchanged */}
-                  <rect x="50" y="50" width="300" height="300" rx="10" fill="#f0f9ff" stroke="#e6f1fa" strokeWidth="2" />
-                  <g opacity="0.1">
-                    <path d="M70 70 L90 90" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M110 70 L130 90" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M150 70 L170 90" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M190 70 L210 90" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M230 70 L250 90" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M270 70 L290 90" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M310 70 L330 90" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M70 110 L90 130" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M110 110 L130 130" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M150 110 L170 130" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M190 110 L210 130" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M230 110 L250 130" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M270 110 L290 130" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M310 110 L330 130" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M70 150 L90 170" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M110 150 L130 170" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M150 150 L170 170" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M190 150 L210 170" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M230 150 L250 170" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M270 150 L290 170" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M310 150 L330 170" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M70 190 L90 210" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M110 190 L130 210" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M150 190 L170 210" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M190 190 L210 210" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M230 190 L250 210" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M270 190 L290 210" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M310 190 L330 210" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M70 230 L90 250" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M110 230 L130 250" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M150 230 L170 250" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M190 230 L210 250" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M230 230 L250 250" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M270 230 L290 250" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M310 230 L330 250" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M70 270 L90 290" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M110 270 L130 290" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M150 270 L170 290" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M190 270 L210 290" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M230 270 L250 290" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M270 270 L290 290" stroke="#0284c7" strokeWidth="1" />
-                    <path d="M310 270 L330 290" stroke="#0284c7" strokeWidth="1" />
-                  </g>
-                  <defs>
-                    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-                      <feDropShadow dx="0" dy="4" stdDeviation="4" floodOpacity="0.1"/>
-                    </filter>
-                  </defs>
-                  <g filter="url(#shadow)" transform="translate(0, 50)">
-                    <path d="M200 80 L260 110 L260 210 L200 260 L140 210 L140 110 L200 80Z" fill="#E6F0FD" stroke="#0284c7" strokeWidth="3" />
-                    <rect x="175" y="150" width="50" height="60" rx="5" fill="#10B981" filter="url(#shadow)" />
-                    <path d="M190 150 L190 120 C190 105 210 105 210 120 L210 150" stroke="#10B981" strokeWidth="8" fill="none" />
-                    <g stroke="#10B981" strokeWidth="2.5">
-                      <path d="M140 160 L175 160" />
-                      <path d="M225 160 L260 160" />
-                      <path d="M140 180 L175 180" />
-                      <path d="M225 180 L260 180" />
-                      <path d="M200 210 L200 240" />
-                      <path d="M175 130 L140 130" />
-                      <path d="M225 130 L260 130" />
-                    </g>
-                    <circle cx="140" cy="130" r="4" fill="#10B981" />
-                    <circle cx="140" cy="160" r="4" fill="#10B981" />
-                    <circle cx="140" cy="180" r="4" fill="#10B981" />
-                    <circle cx="260" cy="130" r="4" fill="#10B981" />
-                    <circle cx="260" cy="160" r="4" fill="#10B981" />
-                    <circle cx="260" cy="180" r="4" fill="#10B981" />
-                    <circle cx="200" cy="240" r="4" fill="#10B981" />
-                  </g>
-                  <g className="group hover:animate-pulse" transform="translate(0, 80)">
-                    <rect x="90" y="70" width="30" height="40" rx="3" fill="#0284c7" className="group-hover:fill-blue-700 transition-colors duration-200"/>
-                    <rect x="95" y="76" width="20" height="3" rx="1" fill="#ffffff" />
-                    <rect x="95" y="84" width="20" height="3" rx="1" fill="#ffffff" />
-                    <rect x="95" y="92" width="20" height="3" rx="1" fill="#ffffff" />
-                    <circle cx="105" cy="110" r="12" fill="#10B981" className="group-hover:fill-green-700 transition-colors duration-200 animate-pulse"/>
-                  </g>
-                  <g className="group hover:animate-pulse" transform="translate(0, 80)">
-                    <path d="M310 90 C310 80 302 72 292 72 C286 72 282 75 280 79 C278 72 272 68 264 68 C252 68 244 77 244 88 C244 89 244 90 244 91 C238 93 234 98 234 105 C234 112 240 118 248 118 L304 118 C310 118 316 112 316 105 C316 98 312 93 310 90Z" fill="#0284c7" className="group-hover:fill-blue-700 transition-colors duration-200"/>
-                    <circle cx="274" cy="100" r="12" fill="#10B981" className="group-hover:fill-green-700 transition-colors duration-200 animate-pulse"/>
-                  </g>
-                  <g className="group hover:animate-pulse" transform="translate(35, 180)">
-                    <rect x="100" y="50" width="50" height="60" rx="5" fill="#0284c7" className="group-hover:fill-blue-700 transition-colors duration-200"/>
-                    <path d="M115 50 L115 25 C115 13 135 13 135 25 L135 50" stroke="#0284c7" strokeWidth="8" fill="none" className="group-hover:stroke-blue-700 transition-colors duration-200"/>
-                    <circle cx="125" cy="80" r="10" fill="#10B981" className="group-hover:fill-green-700 transition-colors duration-200 animate-pulse"/>
-                  </g>
-                </svg>
-                <div className="absolute -bottom-6 -left-6 w-40 h-40 bg-blue-200 rounded-full mix-blend-multiply filter blur-2xl opacity-80 animate-blob"></div>
-                <div className="absolute -top-6 -right-6 w-40 h-40 bg-blue-200 rounded-full mix-blend-multiply filter blur-2xl opacity-80 animate-blob animation-delay-2000"></div>
-                <div className="absolute bottom-24 right-12 w-32 h-32 bg-green-200 rounded-full mix-blend-multiply filter blur-2xl opacity-60 animate-blob animation-delay-4000"></div>
-              </div>
-            </div>
-          </div>
+<div className="bg-white py-20 md:py-32 px-6 md:px-12">
+  <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+    
+    {/* Left Content */}
+    <div className="text-center md:text-left">
+      <div className="inline-flex items-center px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full mb-4">
+        🔒 <span className="ml-2">Trusted by 1M+ Users</span>
+      </div>
+
+      <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
+        Fortify Your Data with <span className="text-green-600">PassManager</span>
+      </h1>
+
+      <p className="mt-4 text-lg text-gray-600 max-w-md mx-auto md:mx-0">
+        State-of-the-art data centers with AES-256 encryption ensure your passwords are locked down tight.
+      </p>
+
+      <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+        <a href="/signup" className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg shadow-md text-lg font-semibold">
+          Get Started Free
+        </a>
+        <a href="#" className="border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 px-6 py-3 rounded-lg shadow-md text-lg font-semibold flex items-center gap-2">
+          ▶ Explore Data Center
+        </a>
+      </div>
+
+      <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center md:justify-start text-gray-500 text-sm">
+        <div className="flex items-center gap-2">
+          ✅ No Master Password Required
+        </div>
+        <div className="flex items-center gap-2">
+          ✅ End-to-End Encryption
         </div>
       </div>
+    </div>
+
+    {/* Right Image (Larger) */}
+    <div className="flex justify-center md:justify-end">
+      <img 
+        src="https://i.postimg.cc/4dnyB9tp/Frame-25.png" 
+        alt="Hero Image" 
+        className="w-full max-w-2xl" // Increased size
+      />
+    </div>
+  </div>
+</div>
+
+
+
+
 
       {/* Features Section */}
       <div className="py-22 bg-gray-50" id="features">
