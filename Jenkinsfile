@@ -3,17 +3,32 @@ pipeline {
 
   environment {
     COMPOSE_PROJECT_NAME = 'shop-sphere-jenkins'
-    COMPOSE_FILE = 'docker-compose.yml' // Ensure correct filename
+    COMPOSE_FILE = 'docker-compose.yaml'
   }
 
   stages {
-    stage('Clone Repository') {
+    stage('Clone') {
       steps {
-        git branch: 'main', url: 'https://github.com/muhammadusmanahmedx/PasswordManager.git'
+        git url: 'https://github.com/muhammadusmanahmedx/PasswordManager.git', branch: 'main'
       }
     }
 
-    stage('Clean Up Previous Containers') {
+    stage('Inject Credentials') {
+      environment {
+        MONGODB_URI = credentials('MONGODB_URI')
+        JWT_SECRET = credentials('JWT_SECRET')
+      }
+      steps {
+        script {
+          writeFile file: ".env", text: """
+            MONGODB_URI=$MONGODB_URI
+            JWT_SECRET=$JWT_SECRET
+          """
+        }
+      }
+    }
+
+    stage('Clean up') {
       steps {
         sh '''
           docker-compose -p $COMPOSE_PROJECT_NAME -f $COMPOSE_FILE down --volumes || true
@@ -23,13 +38,13 @@ pipeline {
       }
     }
 
-    stage('Build Docker Image') {
+    stage('Build') {
       steps {
         sh 'docker-compose -p $COMPOSE_PROJECT_NAME -f $COMPOSE_FILE build --no-cache'
       }
     }
 
-    stage('Deploy App') {
+    stage('Deploy') {
       steps {
         sh 'docker-compose -p $COMPOSE_PROJECT_NAME -f $COMPOSE_FILE up -d'
       }
@@ -38,7 +53,7 @@ pipeline {
 
   post {
     always {
-      echo '✅ Jenkins pipeline execution completed.'
+      echo '✅ Pipeline finished.'
     }
   }
 }
