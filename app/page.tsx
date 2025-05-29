@@ -94,7 +94,7 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-<div className="bg-white py-20 md:py-32 px-6 md:px-12">
+<div className="bg-white py-28 md:py-32 px-6 md:px-12">
   <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
     
     {/* Left Content */}
