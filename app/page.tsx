@@ -98,29 +98,35 @@ export default function LandingPage() {
   <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
     
     {/* Left Content */}
-    <div className="text-center md:text-left">
-      <div className="inline-flex items-center px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full mb-4">
-        🔒 <span className="ml-2">Trusted by 1M+ Users</span>
+    <div className="text-center md:text-left animate-fade-in-down">
+      <div className="inline-flex items-center px-4 py-2 bg-green-100 text-green-800 text-sm rounded-full mb-6 transition duration-300 ease-in-out hover:scale-105">
+        🔒 <span className="ml-2 font-medium">Trusted by 1M+ Users</span>
       </div>
 
-      <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
+      <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">
         Fortify Your Data with <span className="text-green-600">PassManager</span>
       </h1>
 
-      <p className="mt-4 text-lg text-gray-600 max-w-md mx-auto md:mx-0">
+      <p className="mt-5 text-lg text-gray-600 max-w-md mx-auto md:mx-0">
         State-of-the-art data centers with AES-256 encryption ensure your passwords are locked down tight.
       </p>
 
-      <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-        <a href="/signup" className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg shadow-md text-lg font-semibold">
-          Get Started Free
+      <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+        <a 
+          href="/signup" 
+          className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg shadow-lg text-lg font-semibold transition duration-300 transform hover:scale-105"
+        >
+          🚀 Get Started Free
         </a>
-        <a href="#" className="border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 px-6 py-3 rounded-lg shadow-md text-lg font-semibold flex items-center gap-2">
+        <a 
+          href="#" 
+          className="border border-gray-300 text-gray-700 bg-white hover:bg-gray-100 px-6 py-3 rounded-lg shadow-md text-lg font-semibold flex items-center gap-2 transition duration-300 transform hover:scale-105"
+        >
           ▶ Explore Data Center
         </a>
       </div>
 
-      <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center md:justify-start text-gray-500 text-sm">
+      <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-start text-gray-500 text-sm">
         <div className="flex items-center gap-2">
           ✅ No Master Password Required
         </div>
@@ -130,12 +136,12 @@ export default function LandingPage() {
       </div>
     </div>
 
-    {/* Right Image (Larger) */}
-    <div className="flex justify-center md:justify-end">
+    {/* Right Image with subtle animation */}
+    <div className="flex justify-center md:justify-end animate-fade-in-up">
       <img 
         src="https://i.postimg.cc/4dnyB9tp/Frame-25.png" 
         alt="Hero Image" 
-        className="w-full max-w-2xl" // Increased size
+        className="w-full max-w-2xl transition-transform duration-700 ease-in-out hover:scale-105"
       />
     </div>
   </div>
