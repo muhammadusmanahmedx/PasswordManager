@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Shield, Lock, Key, CheckCircle, Database, Zap, Globe, Smartphone, ChevronRight, ArrowRight, Server, Cloud, LockIcon, MessageCircle } from 'lucide-react';
+import { Shield, Lock, Key, CheckCircle, Database, Sparkles,Zap, Globe, Smartphone, ChevronRight, ArrowRight, Server, Cloud, LockIcon, MessageCircle } from 'lucide-react';
 import Head from 'next/head';
+import { Rocket, Play, Check } from 'lucide-react';
 
 export default function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -94,58 +95,70 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-<div className="bg-white py-28 md:py-32 px-6 md:px-12">
-  <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+
+
+<div className="bg-gradient-to-b from-gray-50 to-white py-28 md:py-36 px-6 md:px-12">
+  <div className="max-w-5xl mx-auto flex flex-col items-center text-center">
+    {/* Trust Badge */}
+    <div className="inline-flex items-center px-5 py-2.5 bg-green-50 border border-green-200 text-green-700 text-sm font-medium rounded-full mb-8 shadow-sm hover:shadow-md transition-all duration-200">
+      <Lock size={16} className="text-green-600" />
+      <span className="ml-2">Trusted by 1M+ Users</span>
+    </div>
     
-    {/* Left Content */}
-    <div className="text-center md:text-left animate-fade-in-down">
-      <div className="inline-flex items-center px-4 py-2 bg-green-100 text-green-800 text-sm rounded-full mb-6 transition duration-300 ease-in-out hover:scale-105">
-        🔒 <span className="ml-2 font-medium">Trusted by 1M+ Users</span>
+    {/* Main Heading */}
+    <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight mb-6">
+      Secure Your Digital Life with{' '}
+      <span className="text-green-600">PassManager</span>
+    </h1>
+    
+    {/* Description */}
+    <p className="text-lg md:text-xl text-gray-600 max-w-2xl mb-10 leading-relaxed">
+      Enterprise-grade encryption and intuitive design. Keep your passwords safe 
+      with military-level security that's simple to use.
+    </p>
+    
+    {/* Action Buttons */}
+    <div className="flex flex-col sm:flex-row gap-4 mb-10">
+      <a 
+        href="/signup" 
+        className="bg-green-600 hover:bg-green-700 text-white px-7 py-3.5 rounded-xl shadow-lg text-lg font-semibold transition-all duration-200 hover:shadow-xl flex items-center justify-center gap-2"
+      >
+        <Rocket size={18} />
+        Start Free Trial
+      </a>
+      <a 
+        href="#" 
+        className="border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 px-7 py-3.5 rounded-xl shadow-md text-lg font-semibold flex items-center justify-center gap-2 transition-all duration-200 hover:shadow-lg"
+      >
+        <Play size={16} />
+        Watch Demo
+      </a>
+    </div>
+    
+    {/* Feature Highlights */}
+    <div className="flex flex-col sm:flex-row gap-6 text-gray-600 text-sm mb-16">
+      <div className="flex items-center gap-2">
+        <Check size={16} className="text-green-500" />
+        <span>No Master Password</span>
       </div>
-
-      <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">
-        Fortify Your Data with <span className="text-green-600">PassManager</span>
-      </h1>
-
-      <p className="mt-5 text-lg text-gray-600 max-w-md mx-auto md:mx-0">
-        State-of-the-art data centers with AES-256 encryption ensure your passwords are locked down tight.
-      </p>
-
-      <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-        <a 
-          href="/signup" 
-          className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg shadow-lg text-lg font-semibold transition duration-300 transform hover:scale-105"
-        >
-          🚀 Get Started Free
-        </a>
-        <a 
-          href="#" 
-          className="border border-gray-300 text-gray-700 bg-white hover:bg-gray-100 px-6 py-3 rounded-lg shadow-md text-lg font-semibold flex items-center gap-2 transition duration-300 transform hover:scale-105"
-        >
-          ▶ Explore Data Center
-        </a>
-      </div>
-
-      <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-start text-gray-500 text-sm">
-        <div className="flex items-center gap-2">
-          ✅ No Master Password Required
-        </div>
-        <div className="flex items-center gap-2">
-          ✅ End-to-End Encryption
-        </div>
+      <div className="flex items-center gap-2">
+        <Shield size={16} className="text-green-500" />
+        <span>End-to-End Encryption</span>
       </div>
     </div>
-
-    {/* Right Image with subtle animation */}
-    <div className="flex justify-center md:justify-end animate-fade-in-up">
+    
+    {/* Product Image */}
+    <div className="w-full">
       <img 
         src="https://i.postimg.cc/4dnyB9tp/Frame-25.png" 
-        alt="Hero Image" 
-        className="w-full max-w-2xl transition-transform duration-700 ease-in-out hover:scale-105"
+        alt="PassManager Dashboard" 
+        className="w-full max-w-4xl mx-auto rounded-xl shadow-xl border border-gray-200 hover:shadow-2xl transition-shadow duration-300"
       />
     </div>
   </div>
 </div>
+
+
 
 
 
