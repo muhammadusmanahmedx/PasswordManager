@@ -97,66 +97,67 @@ export default function LandingPage() {
       {/* Hero Section */}
 
 
-<div className="bg-gradient-to-b from-gray-50 to-white py-28 md:py-36 px-6 md:px-12">
-  <div className="max-w-5xl mx-auto flex flex-col items-center text-center">
-    {/* Trust Badge */}
-    <div className="inline-flex items-center px-5 py-2.5 bg-green-50 border border-green-200 text-green-700 text-sm font-medium rounded-full mb-8 shadow-sm hover:shadow-md transition-all duration-200">
-      <Lock size={16} className="text-green-600" />
-      <span className="ml-2">Trusted by 1M+ Users</span>
+<div className="bg-white py-28 md:py-36 px-6 md:px-12">
+  <div className="max-w-5xl mx-auto flex flex-col items-center text-center animate-fade-in-down">
+
+    {/* Badge */}
+    <div className="inline-flex items-center px-5 py-2 bg-green-50 text-green-700 text-sm font-medium rounded-full mb-8 shadow-sm transition-transform transform hover:scale-105">
+      🔒 <span className="ml-2">Trusted by 1M+ Users</span>
     </div>
-    
-    {/* Main Heading */}
-    <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight mb-6">
-      Secure Your Digital Life with{' '}
-      <span className="text-green-600">PassManager</span>
+
+    {/* Heading */}
+    <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight tracking-tight">
+      Fortify Your Data with <span className="text-green-600">PassManager</span>
     </h1>
-    
-    {/* Description */}
-    <p className="text-lg md:text-xl text-gray-600 max-w-2xl mb-10 leading-relaxed">
-      Enterprise-grade encryption and intuitive design. Keep your passwords safe 
-      with military-level security that's simple to use.
+
+    {/* Subtext */}
+    <p className="mt-6 text-lg md:text-xl text-gray-600 max-w-2xl">
+      Enterprise-grade encryption and ultra-secure data centers built to keep your credentials safer than ever before.
     </p>
-    
-    {/* Action Buttons */}
-    <div className="flex flex-col sm:flex-row gap-4 mb-10">
+
+    {/* Buttons */}
+    <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
       <a 
         href="/signup" 
-        className="bg-green-600 hover:bg-green-700 text-white px-7 py-3.5 rounded-xl shadow-lg text-lg font-semibold transition-all duration-200 hover:shadow-xl flex items-center justify-center gap-2"
+        className="bg-green-600 hover:bg-green-700 text-white px-7 py-3 rounded-xl shadow-lg text-lg font-semibold transition-transform transform hover:scale-105"
       >
-        <Rocket size={18} />
-        Start Free Trial
+        🚀 Get Started Free
       </a>
       <a 
         href="#" 
-        className="border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 px-7 py-3.5 rounded-xl shadow-md text-lg font-semibold flex items-center justify-center gap-2 transition-all duration-200 hover:shadow-lg"
+        className="border border-gray-300 text-gray-700 bg-white hover:bg-gray-100 px-7 py-3 rounded-xl shadow-md text-lg font-semibold flex items-center gap-2 transition-transform transform hover:scale-105"
       >
-        <Play size={16} />
-        Watch Demo
+        ▶ Explore Data Center
       </a>
     </div>
-    
-    {/* Feature Highlights */}
-    <div className="flex flex-col sm:flex-row gap-6 text-gray-600 text-sm mb-16">
+
+    {/* Features */}
+    <div className="mt-8 flex flex-col sm:flex-row gap-6 justify-center text-gray-500 text-sm">
       <div className="flex items-center gap-2">
-        <Check size={16} className="text-green-500" />
-        <span>No Master Password</span>
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+        <span>No Master Password Required</span>
       </div>
       <div className="flex items-center gap-2">
-        <Shield size={16} className="text-green-500" />
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
         <span>End-to-End Encryption</span>
       </div>
     </div>
-    
-    {/* Product Image */}
-    <div className="w-full">
+
+    {/* Image below text */}
+    <div className="mt-16 w-full animate-fade-in-up">
       <img 
         src="https://i.postimg.cc/4dnyB9tp/Frame-25.png" 
-        alt="PassManager Dashboard" 
-        className="w-full max-w-4xl mx-auto rounded-xl shadow-xl border border-gray-200 hover:shadow-2xl transition-shadow duration-300"
+        alt="PassManager Hero" 
+        className="w-full max-w-4xl mx-auto rounded-xl shadow-xl transition-transform duration-700 ease-in-out hover:scale-105"
       />
     </div>
   </div>
 </div>
+
 
 
 
