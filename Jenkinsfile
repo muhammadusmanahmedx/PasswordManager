@@ -20,10 +20,8 @@ pipeline {
       }
       steps {
         script {
-          writeFile file: ".env", text: """
-            MONGODB_URI=$MONGODB_URI
-            JWT_SECRET=$JWT_SECRET
-          """
+          writeFile file: ".env", text: """MONGODB_URI=${env.MONGODB_URI}
+JWT_SECRET=${env.JWT_SECRET}"""
         }
       }
     }
@@ -62,8 +60,9 @@ pipeline {
     stage('Install Test Dependencies') {
       steps {
         sh '''
-          apt update
-          apt install -y python3-pip chromium-browser chromium-chromedriver
+          echo "Installing dependencies..."
+          sudo apt-get update -y
+          sudo apt-get install -y python3-pip chromium-browser chromium-driver
           pip3 install -r tests/requirements.txt
         '''
       }
@@ -80,6 +79,5 @@ pipeline {
     always {
       echo '✅ Pipeline finished.'
     }
-    // Optional: Add email notifications after SMTP is configured
   }
 }
