@@ -54,7 +54,8 @@ pipeline {
     stage('Clone Test Repo') {
       steps {
         dir('tests') {
-          git url: 'https://github.com/muhammadusmanahmedx/testPassManager.git' // 🔁 replace with your actual test repo
+          git url: 'https://github.com/muhammadusmanahmedx/testPassManager.git', branch: 'main'
+// 🔁 replace with your actual test repo
         }
       }
     }
