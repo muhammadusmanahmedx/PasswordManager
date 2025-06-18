@@ -7,13 +7,13 @@ pipeline {
   }
 
   stages {
-    stage('Clone App Repo') {
+    stage('Clone Main App Repo') {
       steps {
         git url: 'https://github.com/muhammadusmanahmedx/PasswordManager.git', branch: 'main'
       }
     }
 
-    stage('Inject Credentials') {
+    stage('Inject Environment Variables') {
       environment {
         MONGODB_URI = credentials('MONGODB_URI')
         JWT_SECRET = credentials('JWT_SECRET')
@@ -37,13 +37,13 @@ JWT_SECRET=${env.JWT_SECRET}"""
       }
     }
 
-    stage('Build') {
+    stage('Build App') {
       steps {
         sh 'docker-compose -p $COMPOSE_PROJECT_NAME -f $COMPOSE_FILE build --no-cache'
       }
     }
 
-    stage('Deploy') {
+    stage('Deploy App') {
       steps {
         sh 'docker-compose -p $COMPOSE_PROJECT_NAME -f $COMPOSE_FILE up -d'
       }
@@ -51,23 +51,22 @@ JWT_SECRET=${env.JWT_SECRET}"""
 
     stage('Clone Test Repo') {
       steps {
-        dir('tests') {
+        dir('test-code') {
           git url: 'https://github.com/muhammadusmanahmedx/testPassManager.git', branch: 'main'
         }
       }
     }
 
-   stage('Run Selenium Tests in Docker') {
+    stage('Run Selenium Tests in Docker') {
       steps {
-        // Pull and use our custom Selenium image (built in Step 2)
         sh """
-          docker pull myrepo/selenium-chrome-python:latest
+          docker pull your-dockerhub-username/selenium-chrome-python:latest
           docker run --rm \
             -u root \
-            -v ${WORKSPACE}/tests:/tests \
+            -v ${WORKSPACE}/test-code:/tests \
             -w /tests \
-            myrepo/selenium-chrome-python:latest \
-            bash -c "python3 test_app.py"
+            your-dockerhub-username/selenium-chrome-python:latest \
+            bash -c "pip install -r requirements.txt && python3 test_app.py"
         """
       }
     }
@@ -75,7 +74,7 @@ JWT_SECRET=${env.JWT_SECRET}"""
 
   post {
     always {
-      echo '✅ Pipeline finished.'
+      echo '✅ Pipeline completed!'
     }
   }
 }
