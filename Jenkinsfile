@@ -57,20 +57,19 @@ JWT_SECRET=${env.JWT_SECRET}"""
       }
     }
 
-    stage('Install Test Dependencies') {
+    stage('Run Selenium Tests in Docker') {
       steps {
         sh '''
-          echo "Installing dependencies..."
-          sudo apt-get update -y
-          sudo apt-get install -y python3-pip chromium-browser chromium-driver
-          pip3 install -r tests/requirements.txt
+          docker run --rm \
+            -v $PWD/tests:/tests \
+            -w /tests \
+            selenium/standalone-chrome:latest bash -c "
+              apt-get update &&
+              apt-get install -y python3-pip &&
+              pip3 install selenium==4.15.2 &&
+              python3 test_app.py
+            "
         '''
-      }
-    }
-
-    stage('Run Selenium Tests') {
-      steps {
-        sh 'python3 tests/test_app.py'
       }
     }
   }
