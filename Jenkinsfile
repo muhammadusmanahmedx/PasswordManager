@@ -55,7 +55,6 @@ pipeline {
       steps {
         dir('tests') {
           git url: 'https://github.com/muhammadusmanahmedx/testPassManager.git', branch: 'main'
-// 🔁 replace with your actual test repo
         }
       }
     }
@@ -63,8 +62,8 @@ pipeline {
     stage('Install Test Dependencies') {
       steps {
         sh '''
-          sudo apt update
-          sudo apt install -y python3-pip chromium-browser chromium-chromedriver
+          apt update
+          apt install -y python3-pip chromium-browser chromium-chromedriver
           pip3 install -r tests/requirements.txt
         '''
       }
@@ -81,19 +80,6 @@ pipeline {
     always {
       echo '✅ Pipeline finished.'
     }
-
-    // Uncomment after configuring SMTP
-    /*
-    success {
-      mail to: 'your-email@example.com',
-           subject: "✅ Tests Passed - ${env.JOB_NAME}",
-           body: "All test cases passed successfully!"
-    }
-    failure {
-      mail to: 'your-email@example.com',
-           subject: "❌ Tests Failed - ${env.JOB_NAME}",
-           body: "Some test cases failed. Please check Jenkins logs for details."
-    }
-    */
+    // Optional: Add email notifications after SMTP is configured
   }
 }
