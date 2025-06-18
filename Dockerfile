@@ -1,28 +1,23 @@
-# Install dependencies only when needed
-FROM node:20-alpine AS deps
-WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm install
+version: '3.8'
 
-# Rebuild the source code only when needed
-FROM node:20-alpine AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-RUN npm run build
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: shop-sphere-jenkins_web:latest
+    ports:
+      - "5100:3000"
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
 
-# Production image, copy all the files and run the app
-FROM node:20-alpine AS runner
-WORKDIR /app
-
-ENV NODE_ENV production
-
-# Copy built app and deps
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
-
-EXPOSE 3000
-
-CMD ["npm", "start"]
+  selenium:
+    image: seleniarm/standalone-chromium:latest
+    ports:
+      - "4444:4444"
+    shm_size: 2g
+    environment:
+      - SE_NODE_MAX_SESSIONS=1
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
