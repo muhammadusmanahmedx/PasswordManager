@@ -31,6 +31,7 @@ pipeline {
     stage('Clean up') {
       steps {
         sh '''
+          docker rm -f shop-sphere-jenkins-web-1 || true
           docker-compose -p $COMPOSE_PROJECT_NAME -f $COMPOSE_FILE down --volumes || true
           docker system prune -af || true
           docker volume prune -f || true
@@ -50,16 +51,14 @@ pipeline {
       }
     }
 
-    // 🧪 Clone the test repo
     stage('Clone Test Repo') {
       steps {
         dir('tests') {
-          git url: 'https://github.com/muhammadusmanahmedx/testPassManager.git' // 🔁 update this
+          git url: 'https://github.com/your-username/nextjs-tests.git' // 🔁 replace with your actual test repo
         }
       }
     }
 
-    // 🧪 Install Chrome, Chromedriver & Selenium
     stage('Install Test Dependencies') {
       steps {
         sh '''
@@ -70,7 +69,6 @@ pipeline {
       }
     }
 
-    // 🧪 Run the Python Selenium test cases
     stage('Run Selenium Tests') {
       steps {
         sh 'python3 tests/test_app.py'
@@ -82,6 +80,9 @@ pipeline {
     always {
       echo '✅ Pipeline finished.'
     }
+
+    // Uncomment after configuring SMTP
+    /*
     success {
       mail to: 'your-email@example.com',
            subject: "✅ Tests Passed - ${env.JOB_NAME}",
@@ -92,5 +93,6 @@ pipeline {
            subject: "❌ Tests Failed - ${env.JOB_NAME}",
            body: "Some test cases failed. Please check Jenkins logs for details."
     }
+    */
   }
 }
