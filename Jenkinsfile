@@ -57,19 +57,18 @@ JWT_SECRET=${env.JWT_SECRET}"""
       }
     }
 
-    stage('Run Selenium Tests in Docker') {
+   stage('Run Selenium Tests in Docker') {
       steps {
-        sh '''
+        // Pull and use our custom Selenium image (built in Step 2)
+        sh """
+          docker pull myrepo/selenium-chrome-python:latest
           docker run --rm \
-            -v $PWD/tests:/tests \
+            -u root \
+            -v ${WORKSPACE}/tests:/tests \
             -w /tests \
-            selenium/standalone-chrome:latest bash -c "
-              apt-get update &&
-              apt-get install -y python3-pip &&
-              pip3 install selenium==4.15.2 &&
-              python3 test_app.py
-            "
-        '''
+            myrepo/selenium-chrome-python:latest \
+            bash -c "python3 test_app.py"
+        """
       }
     }
   }
