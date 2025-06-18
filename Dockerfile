@@ -1,23 +1,21 @@
-version: '3.8'
+# Use official Node.js base image
+FROM node:20-alpine
 
-services:
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: shop-sphere-jenkins_web:latest
-    ports:
-      - "5100:3000"
-    env_file:
-      - .env
-    environment:
-      NODE_ENV: production
+# Set working directory
+WORKDIR /app
 
-  selenium:
-    image: seleniarm/standalone-chromium:latest
-    ports:
-      - "4444:4444"
-    shm_size: 2g
-    environment:
-      - SE_NODE_MAX_SESSIONS=1
-      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+# Copy package.json and install dependencies
+COPY package*.json ./
+RUN npm install
+
+# Copy the rest of the app
+COPY . .
+
+# Build if it's a frontend
+RUN npm run build
+
+# Expose the port
+EXPOSE 3000
+
+# Start the application
+CMD ["npm", "start"]
