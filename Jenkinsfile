@@ -54,7 +54,7 @@ pipeline {
     stage('Clone Test Repo') {
       steps {
         dir('tests') {
-          git url: 'https://github.com/your-username/nextjs-tests.git' // 🔁 update this
+          git url: 'https://github.com/muhammadusmanahmedx/testPassManager.git' // 🔁 update this
         }
       }
     }
