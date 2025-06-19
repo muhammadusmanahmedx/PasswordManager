@@ -58,18 +58,17 @@ JWT_SECRET=${env.JWT_SECRET}"""
     }
 
     stage('Run Selenium Tests in Docker') {
-      steps {
-        sh """
-          docker pull your-dockerhub-username/selenium-chrome-python:latest
-          docker run --rm \
-            -u root \
-            -v ${WORKSPACE}/test-code:/tests \
-            -w /tests \
-            your-dockerhub-username/selenium-chrome-python:latest \
-            bash -c "pip install -r requirements.txt && python3 test_app.py"
-        """
-      }
-    }
+  steps {
+    sh """
+      docker run --rm \
+        -u root \
+        -v \$(pwd)/test-code:/tests \
+        -w /tests \
+        selenium/standalone-chrome:latest \
+        bash -c "apt-get update && apt-get install -y python3-pip && pip3 install -r requirements.txt && python3 test_app.py"
+    """
+  }
+}
   }
 
   post {
