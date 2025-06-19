@@ -7,13 +7,13 @@ pipeline {
   }
 
   stages {
-    stage('Clone Main App Repo') {
+    stage('Clone App Repo') {
       steps {
         git url: 'https://github.com/muhammadusmanahmedx/PasswordManager.git', branch: 'main'
       }
     }
 
-    stage('Inject Environment Variables') {
+    stage('Inject Credentials') {
       environment {
         MONGODB_URI = credentials('MONGODB_URI')
         JWT_SECRET = credentials('JWT_SECRET')
@@ -30,45 +30,47 @@ JWT_SECRET=${env.JWT_SECRET}"""
       steps {
         sh '''
           docker rm -f shop-sphere-jenkins-web-1 || true
-          docker-compose -p $COMPOSE_PROJECT_NAME -f $COMPOSE_FILE down --volumes || true
+          docker-compose -p $COMPOSE_PROJECT_NAME -f $COMPOSE_FILE down --volumes --remove-orphans || true
           docker system prune -af || true
           docker volume prune -f || true
         '''
       }
     }
 
-    stage('Build App') {
+    stage('Build') {
       steps {
         sh 'docker-compose -p $COMPOSE_PROJECT_NAME -f $COMPOSE_FILE build --no-cache'
       }
     }
 
-    stage('Deploy App') {
+    stage('Deploy') {
       steps {
-        sh 'docker-compose -p $COMPOSE_PROJECT_NAME -f $COMPOSE_FILE up -d'
+        sh '''
+          docker rm -f shop-sphere-jenkins-web-1 || true
+          docker-compose -p $COMPOSE_PROJECT_NAME -f $COMPOSE_FILE up -d --remove-orphans
+        '''
       }
     }
 
     stage('Clone Test Repo') {
       steps {
-        dir('test-code') {
+        dir('tests') {
           git url: 'https://github.com/muhammadusmanahmedx/testPassManager.git', branch: 'main'
         }
       }
     }
 
     stage('Run Selenium Tests in Docker') {
-  steps {
-    sh """
-      docker run --rm \
-        -u root \
-        -v \$(pwd)/test-code:/tests \
-        -w /tests \
-        selenium/standalone-chrome:latest \
-        bash -c "apt-get update && apt-get install -y python3-pip && pip3 install -r requirements.txt && python3 test_app.py"
-    """
-  }
-}
+      steps {
+        sh '''
+          docker run --rm \
+            -v ${WORKSPACE}/tests:/tests \
+            -w /tests \
+            selenium/standalone-chrome:latest \
+            bash -c "apt-get update && apt-get install -y python3-pip && pip3 install -r requirements.txt && python3 test_app.py"
+        '''
+      }
+    }
   }
 
   post {
