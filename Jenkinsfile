@@ -66,11 +66,12 @@ JWT_SECRET=${env.JWT_SECRET}"""
       docker run --rm \
         -v \${WORKSPACE}/tests:/tests \
         -w /tests \
-        seleniarm/python:3.10-chromium \
-        bash -c "pip install -r requirements.txt && python3 test_app.py"
+        selenium/standalone-chrome:latest \
+        bash -c "apt-get update && apt-get install -y python3-pip && pip3 install -r requirements.txt && python3 test_app.py"
     """
   }
 }
+
   }
 
   post {
